@@ -1,0 +1,157 @@
+<!--{template header}-->
+<script type="text/javascript">
+	var post_url='admincp.php?mod=user&act=post';
+	
+	function editready(name){
+	  var name = $("#editpass").attr("onclick","editpass_save('"+name+"')");
+	}
+	
+	function adduser() {
+		var type=$("#input_type").val();
+		var name=$("#input_name").val();
+		var password=$("#input_password").val();
+		var repassword=$("#input_repassword").val();
+		var group_id=$("#input_group_id").val();
+		var type=$("#input_type").val();
+		$.post(post_url, {
+			'type':type,
+			'name':name,
+			'password':password,
+			'repassword':repassword,
+			'group_id':group_id,
+		}, function(data) {
+			alert(data);
+			if(data=='ok') {
+				location.reload();
+			}
+		});
+	}
+
+	function editpass(name) {
+		$.post(post_url, {
+			'type':'editpass',
+			'name':name,
+			'password':password,
+		}, function(data) {
+			if(data=='ok') {
+				location.reload();
+			}else{
+			  alert(data);
+			}
+		});
+	}
+
+	function deluser(name) {
+		$.post(post_url, {
+			'type':'deluser',
+			'name':name,
+		}, function(data) {
+			if(data=='ok') {
+				location.reload();
+			}
+		});
+	}
+</script>
+<div style="margin-bottom: 10px;">
+  <a data-toggle="modal" href="#newuser" class="btn btn-primary float-right">新增用户</a>
+</div>
+<table class="table table-bordered table-sort" style="margin-bottom: 80px">
+  <thead>
+    <tr>
+      <td>用户名</td>
+      <td>权限</td>
+      <td>密码(未来不显示)</td>
+      <td>用户组</td>
+      <td>创建时间</td>
+      <td>更新时间</td>
+      <td>操作</td>
+    </tr>
+  </thead>
+  <tbody>
+    <!--{loop $res $user}-->
+    <tr>
+      <td>{$user['name']}</td>
+      <td>{$user['auth']}</td>
+      <td>{$user['password']}</td>
+      <td>{$user['group_id']}</td>
+      <td>{php echo date('Y-m-d H:i:s', $user['timestamp'])}</td>
+      <td>{php echo date('Y-m-d H:i:s', $user['last_update'])}</td>
+      <td><span class="btn-group"><button data-toggle="dropdown" class="btn btn-mini dropdown-toggle" onclick="editready('{$user['name']}')">操作<span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li><a data-toggle="modal" href="#edituser" onclick="setuser(1051,106)">更改用户组</a></li>
+          <li><a data-toggle="modal" href="#editpass" onclick="edit('caodaxiang@elex-tech.com')">修改密码</a></li>
+          <li><a href="/user/privilege/uid/1051">权限配置</a></li>
+          <li><a href="#" onclick="deluser('{$user['name']}')">删除</a></li>
+        </ul></span></td>
+    </tr>
+    <!--{/loop}-->
+  </tbody>
+</table>
+<!-- 添加用户模块 -->
+<div class="modal fade hide" id="newuser">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">×</button>
+    <h3>添加用户</h3>
+  </div>
+  <div class="modal-body mid-box">
+    <form id='adduserform' class="form-horizontal form-margin" method="post">
+      <input id="input_type" type="hidden" name="type" value="adduser" >
+      <div class="control-group">
+        <label class="control-label">用户名:</label>
+        <div class="controls">
+          <input id="input_name" class="span3" type="text" name="name">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">密码:</label>
+        <div class="controls">
+          <input id="input_password" class="span3" type="password" name="password">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">重复密码:</label>
+        <div class="controls">
+          <input id="input_repassword" class="span3" type="password" name="repassword">
+        </div>
+      </div>
+      <div class="control-group">
+        <label class="control-label">用户组:</label>
+        <div class="controls">
+          <select id="input_group_id" class="span3" name="group_id">
+            <option value='1'>admin</option>
+            <option value='2'>cs</option>
+            <option value='3'>develop</option>
+            <option value='4'>query</option>
+            <option value='5'>redmine</option>
+            <option value='6'>cshandle</option>
+          </select>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <a href="#" data-dismiss="modal" class="btn btn-primary" onclick='adduser()'>添加</a>
+  </div>
+</div>
+<!-- 修改用户密码模块 -->
+<div class="modal fade hide" id="editpass">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">×</button>
+    <h3>修改密码</h3>
+  </div>
+  <div class="modal-body mid-box">
+    <form id='passuserform' class="form-horizontal form-margin" method="post">
+      <input type="hidden" id='passuserid' name="email">
+      <div class="control-group">
+        <label class="control-label">新密码:</label>
+        <div class="controls">
+          <input id="change_password" class="span3" type="password"  name="password">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <a id="editpass_save" href="#" data-dismiss="modal" class="btn btn-primary" onclick='editpass()'>保存</a>
+  </div>
+</div>
+<!--{template footer}-->

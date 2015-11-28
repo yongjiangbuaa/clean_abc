@@ -1,0 +1,26 @@
+﻿后台代码结构
+├─www : 对外访问的文件夹。在http服务器里边配置访问路径。除了www之外的文件夹都不能被访问。这样做是为了安全。也就是说:control,cron,etc,framework,install,language...这些文件夹都不能配置为可访问。
+│   └─——json.php : 项目的网关代码   所有请求都从这里接收，公共的逻辑可以写在这里。xpub后台结构比一个完整游戏简单的多，为快速上线，control逻辑暂时都写在这里。
+├─model : MVC的Model代码放在这里边。Manager.class.php，负责提供缓存和数据库操作方法。供control/*.php里边的方法使用。通过$this->load(MODEL_NAME)获取到Manager的实例。然后调用Manager实例的方法操作缓存和数据库。
+├─tools : 一些临时的工具类，比如发布xpub消息什么的。在开发过程中使用。不会部署到生产环境下面。misc.php里写有一些开发常用的脚本
+├─view : MVC的View层的代码放到这里。一般放置.htm模板文件。
+├─config.inc.php : 项目的一些常量和全局变量配置在这里边
+├─common.func.php : 项目的一些公共函数放在这里边，比如post_request,get_request等..与framework/common.func.php不同。
+├─control : 待重构。主要的业务逻辑代码。可以通过传入的http参数来定位这里的文件和需要执行的方法。例如通过客户端发送的请求数据{"mod":"base", "act":"load"}，那么框架会从请求数据里边取到mod=base，定位到control/base.php，取到act=load定位到base.php里边的do_load法。目前xpub暂时没这么构造控制逻辑。把数据控制都写在网关json.php里了。
+├─cron : 后台进程。放在这个文件夹下面的php会被后台进程定期调用。
+├─etc : config.ini这个是工程的主要配置文件。包括了数据库和缓存的配置。
+├─framework : 底层的框架代码
+│  ├─cache : 和memcache操作相关的代码，负责执行缓存的操作。例如：存储，修改，删除缓存
+│  ├─config : 解析etc/config.ini文件，生成相应的配置对象：数据库操作对象，缓存操作对象
+│  ├─database : mysql数据库操作相关的代码，包括连接数据库，添加，删除，修改数据库记录
+│  ├─db : mysql数据库的分库分表相关的业务逻辑。还有数据库数据缓存的业务逻辑。这里边的代码比较复杂。有兴趣可以研究下。咱们的框架能够支持大规模并发访问，主要就是靠着这里边的代码。
+│  └─log : 日志相关的业务逻辑。写代码的时候要注意写一些关键的日志信息，便于以后查找问题。因为服务器运行在生产环境。不可能进行调试。可以使用$GLOBALS['logger']->writeDebug('hello world');来写debug信息，并定义的logger的级别允许debug输。├─install : 生成数据库测试数据的代码和一份完整的测试数据。可以使用mysql的命令: source db.sql来对数据进行导入。具体的命令请google或者百度
+├─log : 日志模块生成的临时文件夹，里边是日志信息
+├—admincp ：  后台管理
+
+
+咱们的框架支持分库分表。
+支持通过增加服来扩展业务,通过config_n.ini来为第n服配置数据库和缓存。通过config.ini配置整个游戏公共数据库和缓存。
+
+xpub 暂时没有分库分表。
+暂时只配置复仇1服，怪谈2服，目前都指向同一台机器。参见config_.ini里配置。

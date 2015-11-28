@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<title>XPUB后台管理系统</title>
+		<link rel="stylesheet" href="static/css/bootstrap-modified.css">
+		<link rel="stylesheet" href="static/css/jquery.dataTables.css">
+		<script src="static/js/jquery.min.js"></script>
+		<script src="static/js/bootstrap.min.js"></script>
+		<script src="static/js/jquery.dataTables.min.js"></script>
+	</head>
+	<body>
+		<div class="navbar">
+			<div class="navbar-inner">
+				<a class="brand">XPUB</a>
+				<p class="navbar-text pull-right">
+					<a href="admincp.php?mod=user&act=profile" class="navbar-link">账户设置</a> / <a href="admincp.php?mod=user&act=quit" class="navbar-link">退出</a>
+				</p>
+				<ul class="nav">
+					<li><a href="admincp.php?mod=announce&act=show">应用管理</a></li>
+					<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">数据详情</a>
+						<ul class="dropdown-menu">
+							<li><a href="admincp.php?mod=fb&act=index">任务总览</a></li>
+							<li><a href="admincp.php?mod=fb&act=fbdata">fbdata</a></li>
+							<li><a href="admincp.php?mod=fb&act=fbpost">fbpost</a></li>
+							<li><a href="admincp.php?mod=fb&act=fbreq">fbreq</a></li>
+							<li><a href="admincp.php?mod=fb&act=usertask">usertask</a></li>
+							<li><a href="admincp.php?mod=fb&act=devicedata">devicedata</a></li>
+						</ul></li>
+					
+					<li><a href="admincp.php?mod=user&act=index">用户管理</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="container" style="margin-top: 20px;width: 1180px;">

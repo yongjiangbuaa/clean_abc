@@ -1,0 +1,29 @@
+<!--{template header}-->
+<style type="text/css" media="screen">
+	.checkbox_item {
+		width: 200px;
+		float: left;
+	}
+</style>
+<div>
+  <span class="badge badge-info itemlabel">Action</span>
+  <button class="btn pull-right" onclick='$(".write_json form").submit()'>保存</button>
+  <div>
+    <table class="table table-condensed">
+      <tbody>
+        <!--{loop $admins $admin}-->
+        <tr>
+          <td><span class="label label-success">{$admin[0]}</span></td>
+          <td>
+          <div class="checkbox_item">
+            <div style="float:left" class="action_span"></div>
+            <input onclick="checkbox_status('project_csecret')" id='project_csecret' type="checkbox" name='privilege_action[]' value='project_csecret'>
+            <a class="checkbox_value">csecret</a>
+          </div></td>
+        </tr>
+        <!--{/loop}-->
+      </tbody>
+    </table>
+  </div>
+</div>
+<!--{template footer}-->
